@@ -18,5 +18,11 @@ def build_urls():
 def fetch_page(url):
 	try:
 		response=requests.get(url, headers= HEADERS , timeout=10)
-	except:
-		print("ERROR")	
+		if response.status_code == 200 :
+			return response.text , NONE
+		else :
+			return NONE , f"HTTP {response.status_code}"
+
+	except requests.exceptions.RequestException as e :
+		return NONE , str(e)
+
