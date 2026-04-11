@@ -20,12 +20,12 @@ def fetch_page(url):
 		response=requests.get(url, headers= HEADERS , timeout=10)
 		if response.status_code == 200 :
 			html=response.text
-			return html , NONE
+			return html , None
 		else :
-			return NONE , f"HTTP {response.status_code}"
+			return None , f"HTTP {response.status_code}"
 
 	except requests.exceptions.RequestException as e :
-		return NONE , str(e)
+		return None , str(e)
 
 
 
@@ -33,13 +33,22 @@ def fetch_page(url):
 def parse_product(html,model):
 	soup=BeautifulSoup(html,'html.parser') #BeautifulSoup take the content to parse + the parser
 
-	product_name=soup.selct_one(SELECTORS["product_name"])
-	price=soup.selcet_one(SELECTORS["price"])
-	guarantee=soup.select_one(SELECTORS["guarantee"])
-	storage=soup.select_one(SELECTORS["storage_capacity"])
+	product_name_tag=soup.select_one(SELECTORS["product_name"]) 
+	product_name=product_name_tag.text.strip() if product_name_tag else None
 
+	price_tag=soup.select_one(SELECTORS["price"])
+	price=price_tag.text.strip() if price_tag else None
 
-	return {"product_name":product_name,"product_price":price, "product_guarantee":guarantee, "product_storage":storage}
+	guarantee_tag=soup.select_one(SELECTORS["guarantee"])
+	guarantee=guarantee_tag.text.strip() if guarantee_tag else None
+
+	storage_tag=soup.select_one(SELECTORS["storage_capacity"])
+	storage=storage_tag.text.strip() if storage else None
+
+	return {"product_name":product_name,
+		"product_price":price,
+		"product_guarantee":guarantee,
+		"product_storage":storage}
 
 
 
