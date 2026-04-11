@@ -33,8 +33,13 @@ def fetch_page(url):
 def parse_product(html,model):
 	soup=BeautifulSoup(html,'html.parser') #BeautifulSoup take the content to parse + the parser
 
-	
+	product_name=soup.selct_one(SELECTORS["product_name"])
+	price=soup.selcet_one(SELECTORS["price"])
+	guarantee=soup.select_one(SELECTORS["guarantee"])
+	storage=soup.select_one(SELECTORS["storage_capacity"])
 
+
+	return {"product_name":product_name,"product_price":price, "product_guarantee":guarantee, "product_storage":storage}
 
 
 
